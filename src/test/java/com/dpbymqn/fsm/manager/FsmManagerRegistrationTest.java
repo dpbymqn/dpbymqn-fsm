@@ -8,10 +8,6 @@ import com.dpbymqn.fsm.StateListener;
 import com.dpbymqn.fsm.StatefulObject;
 import com.dpbymqn.fsm.ann.PostTransition;
 import com.dpbymqn.fsm.ann.PreTransition;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -21,25 +17,11 @@ import static org.junit.Assert.*;
  */
 public class FsmManagerRegistrationTest {
 
-    public static class LocalModule extends AbstractModule {
-
-        @Override
-        protected void configure() {
-            bind(FsmManager.class);
-            bind(Hist.class);
-            bind(SO1.class);
-            bind(SL1.class);
-            bind(SL2.class);
-        }
-    }
-    final static Injector injector = Guice.createInjector( new LocalModule());
-
     public FsmManagerRegistrationTest() {
     }
 
     @Before
     public void setUp() {
-        injector.getInstance(FsmManager.class).reset();
         SL2.h.clear();
     }
 
@@ -51,8 +33,7 @@ public class FsmManagerRegistrationTest {
 
     public static class SL1 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @PreTransition
         void check(SO1 so, String fromState, String toState) {
@@ -88,8 +69,7 @@ public class FsmManagerRegistrationTest {
 
     public static class SL3 implements IF1 {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @Override
         public void myCheck(StatefulObject so, String fromState, String toState) {
@@ -99,8 +79,7 @@ public class FsmManagerRegistrationTest {
 
     public static class SL4 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @PostTransition("TX1")
         public void myCheck1(SO1 so, String fromState, String toState) {
@@ -125,8 +104,7 @@ public class FsmManagerRegistrationTest {
 
     public static class SL5 implements StateListener, StatefulObject {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @PostTransition("TX1")
         public void myCheck1(SL5 so, String fromState, String toState) {
@@ -160,10 +138,10 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterByInstance() {
         System.out.println("register listener and stateful instances");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL1 sl = injector.getInstance(SL1.class);
-        final SO1 so = injector.getInstance(SO1.class);
-        final SO1 so2 = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL1 sl = new SL1();
+        final SO1 so = new SO1();
+        final SO1 so2 = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TS1");
@@ -183,9 +161,9 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterClz() {
         System.out.println("register listener and stateful classes");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so = injector.getInstance(SO1.class);
-        final SO2 so2 = injector.getInstance(SO2.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so = new SO1();
+        final SO2 so2 = new SO2();
         instance.register(SL2.class, null, so.getClass(), null);
 
         instance.changeState(so, "TS1");
@@ -208,10 +186,10 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterClz2Inst() {
         System.out.println("register listener object, stateful class");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so = injector.getInstance(SO1.class);
-        final SL1 sl = injector.getInstance(SL1.class);
-        final SO1 so2 = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so = new SO1();
+        final SL1 sl = new SL1();
+        final SO1 so2 = new SO1();
         instance.register(null, sl, so.getClass(), null);
 
         instance.changeState(so, "TS1");
@@ -233,9 +211,9 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterInst2Clz() {
         System.out.println("register listener class, stateful instance");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so = injector.getInstance(SO1.class);
-        final SO1 so2 = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so = new SO1();
+        final SO1 so2 = new SO1();
         instance.register(SL2.class, null, null, so);
 
         instance.changeState(so, "TS1");
@@ -256,9 +234,9 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterInterface() {
         System.out.println("register listener interface ");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so = injector.getInstance(SO1.class);
-        final SL3 sl3 = injector.getInstance(SL3.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so = new SO1();
+        final SL3 sl3 = new SL3();
 
         instance.register(null, sl3, null, so);
 
@@ -286,10 +264,10 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterSignatureSO() {
         System.out.println("register listener w different SO signatures ");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so1 = injector.getInstance(SO1.class);
-        final SO2 so2 = injector.getInstance(SO2.class);
-        final SL4 sl = injector.getInstance(SL4.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so1 = new SO1();
+        final SO2 so2 = new SO2();
+        final SL4 sl = new SL4();
 
         instance.register(null, sl, null, so1);
         instance.register(null, sl, null, so2);
@@ -320,9 +298,9 @@ public class FsmManagerRegistrationTest {
     @Test
     public void testRegisterSignatureSOSL() {
         System.out.println("register listener w different SO signatures on self listener state machine");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SO1 so1 = injector.getInstance(SO1.class);
-        final SL5 sl = injector.getInstance(SL5.class);
+        FsmManager instance = new FsmManager();
+        final SO1 so1 = new SO1();
+        final SL5 sl = new SL5();
 
         instance.register(null, sl, null, so1);
         instance.register(null, sl, null, sl);

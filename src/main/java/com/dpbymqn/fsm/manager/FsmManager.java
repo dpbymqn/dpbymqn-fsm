@@ -30,7 +30,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.google.inject.Singleton;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -64,7 +63,6 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author dpbymqn
  */
-@Singleton
 public class FsmManager extends FsmManagerBase {
 
     LazySingleKeyMap<Class<? extends StatefulObject>, Collection<Method>> lazyAllMethods = new LazySingleKeyMap<Class<? extends StatefulObject>, Collection<Method>>() {

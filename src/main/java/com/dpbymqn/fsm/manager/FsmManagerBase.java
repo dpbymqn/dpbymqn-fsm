@@ -20,7 +20,6 @@ import com.dpbymqn.fsm.StateListener;
 import com.dpbymqn.fsm.StatefulObject;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -36,8 +35,8 @@ import java.util.logging.Logger;
  */
 public class FsmManagerBase {
 
-    @Inject
-    Logger log;
+    private final static Logger log = Logger.getLogger(FsmManagerBase.class.getName());
+    
 //    final private Map<StatefulObject, String> stateRegistry = Collections.synchronizedMap(new WeakHashMap<StatefulObject, String>());
     final private Map<StatefulObject, String> stateRegistry = new WeakHashMap<StatefulObject, String>();
     final protected Map<StatefulObject, Map<StateListener, Map<String, Multimap<String, TransitionCallback>>>> instancePreTrCallbackMap =

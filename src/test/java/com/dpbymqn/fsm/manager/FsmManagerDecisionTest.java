@@ -7,10 +7,6 @@ package com.dpbymqn.fsm.manager;
 import com.dpbymqn.fsm.StateListener;
 import com.dpbymqn.fsm.StatefulObject;
 import com.dpbymqn.fsm.ann.OnDecision;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -20,27 +16,11 @@ import static org.junit.Assert.*;
  */
 public class FsmManagerDecisionTest {
 
-    public static class LocalModule extends AbstractModule {
-
-        @Override
-        protected void configure() {
-            bind(FsmManager.class);
-            bind(Hist.class);
-            bind(SO1.class);
-            bind(SL1.class);
-            bind(SL2.class);
-            bind(SL3.class);
-            bind(SL4.class);
-        }
-    }
-    final static Injector injector = Guice.createInjector(new LocalModule());
-
     public FsmManagerDecisionTest() {
     }
 
     @Before
     public void setUp() {
-        injector.getInstance(FsmManager.class).reset();
 //        SL2.h.clear();
     }
 
@@ -49,8 +29,7 @@ public class FsmManagerDecisionTest {
 
     public static class SL2 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @OnDecision(next = "")
         String b1(SO1 sm, String fromState) {
@@ -61,8 +40,7 @@ public class FsmManagerDecisionTest {
 
     public static class SL3 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @OnDecision(next = "")
         String b1(SO1 sm, String fromState) {
@@ -76,8 +54,7 @@ public class FsmManagerDecisionTest {
 
     public static class SL4 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @OnDecision(prev = "TX1", next = "TX2")
         Boolean b1(SO1 sm, String fromState) {
@@ -88,8 +65,7 @@ public class FsmManagerDecisionTest {
 
     public static class SL5 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @OnDecision(prev = "B1X1", next = "B1X2")
         Boolean b1(SO1 sm, String toState) {
@@ -130,8 +106,7 @@ public class FsmManagerDecisionTest {
 
     public static class SL1 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @OnDecision(next = "TX2")
         Boolean b1(SO1 sm, String fromState, String toState) {
@@ -146,9 +121,9 @@ public class FsmManagerDecisionTest {
     @Test
     public void testBasicDecisionBoolean() {
         System.out.println("test basic decision calls");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL1 sl = injector.getInstance(SL1.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL1 sl = new SL1();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");
@@ -170,9 +145,9 @@ public class FsmManagerDecisionTest {
     @Test
     public void testBasicDecisionString() {
         System.out.println("test basic decision calls3");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL2 sl = injector.getInstance(SL2.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL2 sl = new SL2();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");
@@ -193,9 +168,9 @@ public class FsmManagerDecisionTest {
     @Test
     public void testBasicDecisionStringWithBranching() {
         System.out.println("test basic decision calls3");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL3 sl = injector.getInstance(SL3.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL3 sl = new SL3();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");
@@ -213,9 +188,9 @@ public class FsmManagerDecisionTest {
     @Test
     public void testBasicDecisionWithBoolean1() {
         System.out.println("test boolean decision 1");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL4 sl = injector.getInstance(SL4.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL4 sl = new SL4();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");

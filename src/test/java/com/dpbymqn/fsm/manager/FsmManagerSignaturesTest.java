@@ -8,10 +8,6 @@ import com.dpbymqn.fsm.StateListener;
 import com.dpbymqn.fsm.StatefulObject;
 import com.dpbymqn.fsm.ann.PostTransition;
 import com.dpbymqn.fsm.ann.PreTransition;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -22,26 +18,7 @@ import static org.junit.Assert.*;
  */
 public class FsmManagerSignaturesTest {
 
-    public static class LocalModule extends AbstractModule {
-
-        @Override
-        protected void configure() {
-            bind(FsmManager.class);
-            bind(Hist.class);
-            bind(SO1.class);
-            bind(SL1.class);
-            bind(SL2.class);
-        }
-    }
-    final static Injector injector = Guice.createInjector(new LocalModule());
-
     public FsmManagerSignaturesTest() {
-    }
-
-    @Before
-    public void setUp() {
-        injector.getInstance(FsmManager.class).reset();
-//        SL2.h.clear();
     }
 
     public static class SO1 implements StatefulObject {
@@ -49,8 +26,7 @@ public class FsmManagerSignaturesTest {
 
     public static class SL0 implements StateListener {
 
-        @Inject
-        Hist h;
+        Hist h = new Hist();
 
         @PreTransition
         void check1(SO1 so, String fromState, String toState) {
@@ -110,9 +86,9 @@ public class FsmManagerSignaturesTest {
     @Test
     public void testRegisterByInstance() {
         System.out.println("test base pre and post calls");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL1 sl = injector.getInstance(SL1.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL1 sl = new SL1();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");
@@ -126,9 +102,9 @@ public class FsmManagerSignaturesTest {
     @Test
     public void testMoreMethodSignatures() {
         System.out.println("call pre methods with different signatures");
-        FsmManager instance = injector.getInstance(FsmManager.class);
-        final SL2 sl = injector.getInstance(SL2.class);
-        final SO1 so = injector.getInstance(SO1.class);
+        FsmManager instance = new FsmManager();
+        final SL2 sl = new SL2();
+        final SO1 so = new SO1();
         instance.register(null, sl, null, so);
 
         instance.changeState(so, "TX1");

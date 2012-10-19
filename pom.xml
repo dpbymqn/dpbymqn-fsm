@@ -19,8 +19,29 @@
         </license>
     </licenses>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <mode>development</mode>
+                            <Built-By>dpbymqn</Built-By>
+                            <url>${project.url}</url>
+                            <Bundle-License>http://www.gnu.org/licenses/gpl-3.0.html</Bundle-License>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+                <version>2.4</version>
+            </plugin>
+        </plugins>
+    </build>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.url>https://github.com/dpbymqn/dpbymqn-fsm</project.url>
     </properties>
 
     <dependencies>

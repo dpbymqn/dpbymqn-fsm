@@ -28,7 +28,6 @@
                     <archive>
                         <manifestEntries>
                             <mode>development</mode>
-                            <Built-By>dpbymqn</Built-By>
                             <url>${project.url}</url>
                             <Bundle-License>http://www.gnu.org/licenses/gpl-3.0.html</Bundle-License>
                         </manifestEntries>

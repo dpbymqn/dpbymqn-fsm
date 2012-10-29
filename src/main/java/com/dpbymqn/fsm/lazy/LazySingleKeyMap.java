@@ -64,4 +64,8 @@ public abstract class LazySingleKeyMap<K, T> implements Serializable {
     public boolean containsKey(K key) {
         return map.containsKey(key);
     }
+
+    public void remove(K key) {
+        map.remove(key);
+    }
 }

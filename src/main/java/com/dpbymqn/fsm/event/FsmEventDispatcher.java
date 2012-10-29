@@ -35,6 +35,9 @@ public class FsmEventDispatcher {
                     for (Class<?> c = key; !Object.class.equals(c); c = c.getSuperclass()) {
                         for (Method m : c.getDeclaredMethods()) {
                             if (m.isAnnotationPresent(OnEvent.class)) {
+                                if (!m.isAccessible()) {
+                                    m.setAccessible(true);
+                                }
                                 assert m.getParameterTypes().length == 1;
                                 final OnEvent ann = m.getAnnotation(OnEvent.class);
                                 if (StringUtils.isEmpty(ann.value())) {
@@ -62,29 +65,22 @@ public class FsmEventDispatcher {
     public <T> void fireEvent(StatefulEventListener obj, T event) {
         final String state = fsm.getState(obj);
         final Multimap<String, Method> mm = clzMap.get(obj.getClass());
-        for (Method method : mm.get(ALL_MARKER)) {
-            try {
+        try {
+            for (Method method : mm.get(ALL_MARKER)) {
                 method.invoke(obj, event);
-            } catch (Exception ex) {
-                log.throwing(obj.getClass().getName(), method.getName(), ex);
             }
-        }
-        if (!mm.get(state).isEmpty()) {
-            for (Method method : mm.get(state)) {
-                try {
+            if (!mm.get(state).isEmpty()) {
+                for (Method method : mm.get(state)) {
                     method.invoke(obj, event);
-                } catch (Exception ex) {
-                    log.throwing(obj.getClass().getName(), method.getName(), ex);
+                }
+            } else {
+                for (Method method : mm.get(OTHER_MARKER)) {
+                    method.invoke(obj, event);
                 }
             }
-        } else {
-            for (Method method : mm.get(OTHER_MARKER)) {
-                try {
-                    method.invoke(obj, event);
-                } catch (Exception ex) {
-                    log.throwing(obj.getClass().getName(), method.getName(), ex);
-                }
-            }
+        } catch (Exception ex) {
+            log.throwing(obj.getClass().getName(), null, ex);
+            throw new RuntimeException(ex);
         }
 //        for (Method method : instMap.get(obj).get(state)) {
 //            try {

@@ -24,6 +24,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marker for methods which the FsmEventDispatcher should call.
+ *
+ * If value is empty, then every message will be dispatched to this method,
+ * otherwise only the events which arrive when the object is in the given state.
+ *
+ * If otherwise is set to true, then the method will be called when no other
+ * methods are invoked.
+ *
+ * More than one methods can be marked and they all will be called back, but the
+ * order is undefined.
+ *
  * @author dpbymqn
  */
 @Target({ElementType.METHOD})

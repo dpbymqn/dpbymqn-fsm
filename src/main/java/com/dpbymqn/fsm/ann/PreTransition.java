@@ -35,4 +35,11 @@ public @interface PreTransition {
     String value() default "";
 
     Class<? extends StatefulObject> smClass() default StatefulObject.class;
+
+    @Target({ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface List {
+
+        PreTransition[] value() default {};
+    }
 }

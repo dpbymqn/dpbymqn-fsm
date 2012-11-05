@@ -46,7 +46,7 @@ public @interface OnEvent {
      *
      * @return
      */
-    String value() default "";
+    String [] value() default "";
 
     /**
      * called in any event

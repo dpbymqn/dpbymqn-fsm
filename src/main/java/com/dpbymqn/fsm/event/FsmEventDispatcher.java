@@ -40,7 +40,7 @@ public class FsmEventDispatcher {
                                 }
                                 assert m.getParameterTypes().length == 1;
                                 final OnEvent ann = m.getAnnotation(OnEvent.class);
-                                if (StringUtils.isEmpty(ann.value())) {
+                                if (ann.value().length == 1 && StringUtils.isEmpty(ann.value()[0])) {
                                     if (ann.other()) {
                                         res.put(OTHER_MARKER, m);
                                     }
@@ -48,7 +48,9 @@ public class FsmEventDispatcher {
                                         res.put(ALL_MARKER, m);
                                     }
                                 } else {
-                                    res.put(ann.value(), m);
+                                    for (String k : ann.value()) {
+                                        res.put(k, m);
+                                    }
                                 }
                             }
                         }

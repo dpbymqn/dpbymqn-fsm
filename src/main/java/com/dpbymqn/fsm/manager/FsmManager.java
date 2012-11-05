@@ -16,9 +16,6 @@
  */
 package com.dpbymqn.fsm.manager;
 
-import com.dpbymqn.fsm.ann.PreTransitions;
-import com.dpbymqn.fsm.ann.PostTransitions;
-import com.dpbymqn.fsm.ann.OnDecisions;
 import com.dpbymqn.fsm.ann.PostTransition;
 import com.dpbymqn.fsm.ann.OnDecision;
 import com.dpbymqn.fsm.ann.PreTransition;
@@ -98,8 +95,8 @@ public class FsmManager extends FsmManagerBase {
                 if (m.isAnnotationPresent(PreTransition.class)) {
                     res.put(m.getAnnotation(PreTransition.class), m);
                 }
-                if (m.isAnnotationPresent(PreTransitions.class)) {
-                    for (PreTransition pr : m.getAnnotation(PreTransitions.class).value()) {
+                if (m.isAnnotationPresent(PreTransition.List.class)) {
+                    for (PreTransition pr : m.getAnnotation(PreTransition.List.class).value()) {
                         res.put(pr, m);
                     }
                 }
@@ -115,8 +112,8 @@ public class FsmManager extends FsmManagerBase {
                 if (m.isAnnotationPresent(PostTransition.class)) {
                     res.put(m.getAnnotation(PostTransition.class), m);
                 }
-                if (m.isAnnotationPresent(PostTransitions.class)) {
-                    for (PostTransition pr : m.getAnnotation(PostTransitions.class).value()) {
+                if (m.isAnnotationPresent(PostTransition.List.class)) {
+                    for (PostTransition pr : m.getAnnotation(PostTransition.List.class).value()) {
                         res.put(pr, m);
                     }
                 }
@@ -132,8 +129,8 @@ public class FsmManager extends FsmManagerBase {
                 if (m.isAnnotationPresent(OnDecision.class)) {
                     res.put(m.getAnnotation(OnDecision.class), m);
                 }
-                if (m.isAnnotationPresent(OnDecisions.class)) {
-                    for (OnDecision pr : m.getAnnotation(OnDecisions.class).value()) {
+                if (m.isAnnotationPresent(OnDecision.List.class)) {
+                    for (OnDecision pr : m.getAnnotation(OnDecision.List.class).value()) {
                         res.put(pr, m);
                     }
                 }

@@ -40,4 +40,11 @@ public @interface OnDecision {
     String next();
 
     Class<? extends StatefulObject> smClass() default StatefulObject.class;
+
+    @Target({ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface List {
+
+        OnDecision[] value() default {};
+    }
 }

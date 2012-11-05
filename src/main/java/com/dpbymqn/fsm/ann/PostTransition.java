@@ -57,4 +57,11 @@ public @interface PostTransition {
     String next() default "";
 
     Class<? extends StatefulObject> smClass() default StatefulObject.class;
+
+    @Target({ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface List {
+
+        PostTransition[] value() default {};
+    }
 }
